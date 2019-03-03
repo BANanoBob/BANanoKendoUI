@@ -1,0 +1,237 @@
+﻿AppType=JavaFX
+Build1=Default,b4j.example
+File1=ComboBoxLayout.bjl
+File10=ProgressBarLayout.bjl
+File11=SliderLayout.bjl
+File12=SplitterLayout.bjl
+File13=TabStripLayout.bjl
+File14=ToolbarLayout.bjl
+File15=wallpaper.jpg
+File16=WindowLayout.bjl
+File2=countries.json
+File3=DateAndTimeLayout.bjl
+File4=DialogLayout.bjl
+File5=ListboxLayout.bjl
+File6=ListViewLayout.bjl
+File7=MainLayout.bjl
+File8=PanelBarLayout.bjl
+File9=PredefinedDialogsLayout.bjl
+FileGroup1=Default Group
+FileGroup10=Default Group
+FileGroup11=Default Group
+FileGroup12=Default Group
+FileGroup13=Default Group
+FileGroup14=Default Group
+FileGroup15=Default Group
+FileGroup16=Default Group
+FileGroup2=Default Group
+FileGroup3=Default Group
+FileGroup4=Default Group
+FileGroup5=Default Group
+FileGroup6=Default Group
+FileGroup7=Default Group
+FileGroup8=Default Group
+FileGroup9=Default Group
+Group=Default Group
+Library1=jcore
+Library2=jfx
+Library3=banano
+Library4=bananokendoui
+Module1=ComboBoxDemo
+Module10=modMain
+Module11=BANanoRouter
+Module12=ToolbarDemo
+Module13=SplitterDemo
+Module14=SliderDemo
+Module15=PredefinedDialogsDemo
+Module2=PanelBarDemo
+Module3=TabStripDemo
+Module4=ListboxDemo
+Module5=ListViewDemo
+Module6=DialogDemo
+Module7=DateAndTimeDemo
+Module8=ProgressBarDemo
+Module9=WindowDemo
+NumberOfFiles=16
+NumberOfLibraries=4
+NumberOfModules=15
+Version=7.28
+@EndOfDesignText@
+#Region Project Attributes 
+	#IgnoreWarnings: 11, 15, 16
+#End Region
+
+Sub Process_Globals
+	
+	Private BANano As BANano
+	Private Kendo  As Kendo 'ignore
+
+	Private ddlTheme As BANanoKendoDropDownList
+
+	Public Router As BANanoRouter
+	
+End Sub
+
+Sub AppStart (Form1 As Form, Args() As String)
+
+	BANano.Initialize("BANanoKendoUI", "BANanoKendoUI", 1)
+	
+	BANano.UseServiceWorker = False
+	
+	BANano.HTML_NAME = "index.html"
+	
+	BANano.Header.Title = "BANanoKendoUI"
+
+	BANano.Header.AddCSSFile("http://kendo.cdn.telerik.com/2019.1.220/styles/kendo.common.min.css")
+	' BANano.Header.AddCSSFile("http://kendo.cdn.telerik.com/2019.1.220/styles/kendo.default.min.css")
+
+	BANano.Header.AddJavascriptFile("https://rawgit.com/Marak/faker.js/master/examples/browser/js/faker.js") ' sample data
+	
+	BANano.Header.AddJavascriptFile("http://kendo.cdn.telerik.com/2019.1.220/js/jquery.min.js")
+	BANano.Header.AddJavascriptFile("http://kendo.cdn.telerik.com/2019.1.220/js/kendo.ui.core.min.js")
+	BANano.Header.AddJavascriptFile("http://kendo.cdn.telerik.com/2019.1.220/js/cultures/kendo.culture.de-DE.min.js")
+
+	' ###
+
+	BANano.JAVASCRIPT_NAME = "app.js"
+
+	BANano.Build("C:\inetpub\wwwroot\BANano\")
+
+	ExitApplication
+
+End Sub
+
+Sub BANanoKendoUI_Ready()
+
+	#If CSS
+			
+			body {
+				font-family: Verdana;
+				font-size: 0.8em;
+				background-image: url("./assets/wallpaper.jpg");
+				background-size: 100%;
+			}
+			
+	#End If
+	
+	Kendo.Initialize
+
+	Kendo.FirstDay = 1 ' set Monday to the first day in the week (for calendar and date(time)picker)
+
+	modMain.SelectedTheme = "Fiori"
+
+	Router.Initialize
+
+	Router.AddRoute("WindowDemo",            BANano.BN("WindowDemo"))
+	Router.AddRoute("ToolbarDemo",           BANano.BN("ToolbarDemo"))
+	Router.AddRoute("SplitterDemo",          BANano.BN("SplitterDemo"))
+	Router.AddRoute("ComboBoxDemo",          BANano.BN("ComboBoxDemo"))
+	Router.AddRoute("TabStripDemo",          BANano.BN("TabStripDemo"))
+	Router.AddRoute("PanelBarDemo",          BANano.BN("PanelBarDemo"))
+	Router.AddRoute("ListBoxDemo",           BANano.BN("ListBoxDemo"))
+	Router.AddRoute("ListViewDemo",          BANano.BN("ListViewDemo"))
+	Router.AddRoute("ProgressBarDemo",       BANano.BN("ProgressBarDemo"))
+	Router.AddRoute("DateAndTimeDemo",       BANano.BN("DateAndTimeDemo"))
+	Router.AddRoute("SliderDemo",            BANano.BN("SliderDemo"))
+	Router.AddRoute("PredefinedDialogsDemo", BANano.BN("PredefinedDialogsDemo"))
+	Router.AddRoute("DialogDemo",            BANano.BN("DialogDemo"))
+	
+	BANano.LoadLayout("body", "MainLayout")
+
+	' Add Buttons to 'sidebar'
+
+	AddButtonToSidebar("Window", "")
+	AddButtonToSidebar("Toolbar", "")
+	AddButtonToSidebar("Splitter", "")
+	AddButtonToSidebar("ComboBox", "ComboBox" & CRLF & "DropDownList" & CRLF & "MultiSelect" & CRLF & "AutoComplete")
+	AddButtonToSidebar("TabStrip", "")
+	AddButtonToSidebar("PanelBar", "")
+	AddButtonToSidebar("Listbox", "")
+	AddButtonToSidebar("ListView", "")
+	AddButtonToSidebar("ProgressBar", "")
+	AddButtonToSidebar("DateAndTime", "Date & Time")
+	AddButtonToSidebar("Slider", "")
+	AddButtonToSidebar("PredefinedDialogs", "Predefined Dialogs")
+	AddButtonToSidebar("Dialog", "")
+
+	' Themes:
+
+	Dim DataSource As BANanoKendoDataSource
+	DataSource.Initialize(Me, "DS")
+	
+	DataSource.Add(CreateMap("theme":"Black"))
+	DataSource.Add(CreateMap("theme":"BlueOpal"))
+	DataSource.Add(CreateMap("theme":"Bootstrap"))
+	DataSource.Add(CreateMap("theme":"Default"))
+	DataSource.Add(CreateMap("theme":"Fiori"))
+	DataSource.Add(CreateMap("theme":"Flat"))
+	DataSource.Add(CreateMap("theme":"HighContrast"))
+	DataSource.Add(CreateMap("theme":"Material"))
+	DataSource.Add(CreateMap("theme":"MaterialBlack"))
+	DataSource.Add(CreateMap("theme":"Metro"))
+	DataSource.Add(CreateMap("theme":"Moonlight"))
+	DataSource.Add(CreateMap("theme":"Nova"))
+	DataSource.Add(CreateMap("theme":"Office365"))
+	DataSource.Add(CreateMap("theme":"Silver"))
+	DataSource.Add(CreateMap("theme":"Uniform"))
+
+	ddlTheme.DataTextField = "theme"
+	ddlTheme.DataValueField = "theme"
+	
+	ddlTheme.DataSource = DataSource
+
+	ddlTheme.Value = modMain.SelectedTheme
+
+	SetSelectedTheme
+
+End Sub
+
+Sub AddButtonToSidebar(Name As String, Text As String)
+	
+	Dim SidebarButton As BANanoKendoButton
+	
+	SidebarButton.Initialize(Me, Name, "sidebarbutton")
+
+	SidebarButton.AddToParent("#sidebar")
+
+	If Text = "" Then Text = Name
+
+	SidebarButton.Text = Text
+	
+	Dim J As BANanoJSONGenerator
+	
+	J.initialize(CreateMap("width": "150px", "margin-bottom": "5px"))
+
+	SidebarButton.Style = J.ToString
+	
+End Sub
+
+Sub SidebarButton_Click(Event As Map)
+	
+	Dim SidebarButton As BANanoKendoButton = Sender
+	
+	Router.NavigateTo(SidebarButton.Name & "Demo", True, False)
+	BANano.History.PushState(CreateMap("currentState": SidebarButton.Name & "Demo"), Null)
+
+End Sub
+
+Sub ddlTheme_Change(Event As Map)
+	
+	modMain.SelectedTheme = ddlTheme.Value
+
+	SetSelectedTheme
+
+End Sub
+
+Sub SetSelectedTheme
+
+	BANano.GetElement("#theme").Remove
+	
+	Dim CSS As String = $"<link id="theme" href="http://kendo.cdn.telerik.com/2019.1.220/styles/kendo.${modMain.SelectedTheme.ToLowerCase}.min.css" rel="stylesheet" type="text/css">"$
+
+	BANano.GetElement("head").Append(CSS)
+
+End Sub
+
+
+
